@@ -1,4 +1,9 @@
-using FeatureFlag.Api.DbContexts;
+using AutoMapper;
+using FeatureFlag.Application.AppServices;
+using FeatureFlag.Application.Interfaces.AppServices;
+using FeatureFlag.Application.Interfaces.Repositories;
+using FeatureFlag.Infrastructure.DbContexts;
+using FeatureFlag.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +31,11 @@ namespace FeatureFlag.Api
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Feature Flags", Version = "v1", });
             });
+
+            services.AddScoped<IFeatureAppService, FeatureAppService>();
+            services.AddScoped<IFeatureRepository, FeatureRepository>();
+            
+            //services.AddAutoMapper();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,9 +51,7 @@ namespace FeatureFlag.Api
             });
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

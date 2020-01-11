@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FeatureFlag.Api.Models
+namespace FeatureFlag.Domain.Models
 {
     public class Feature
     {

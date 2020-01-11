@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using FeatureFlag.Application.Interfaces.AppServices;
+using FeatureFlag.Domain.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using FeatureFlag.Api.DbContexts;
-using FeatureFlag.Api.Models;
 
 namespace FeatureFlag.Api.Controllers
 {
@@ -12,91 +13,62 @@ namespace FeatureFlag.Api.Controllers
     [ApiController]
     public class FeaturesController : ControllerBase
     {
-        private readonly FeatureFlagContext _context;
+        private readonly IFeatureAppService featureAppService;
+        private readonly string currentEnvironment;
 
-        public FeaturesController(FeatureFlagContext context)
+        public FeaturesController(IFeatureAppService featureAppService, IWebHostEnvironment environment)
         {
-            _context = context;
+            this.featureAppService = featureAppService;
+            currentEnvironment = environment.EnvironmentName;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Feature>>> GetFeatures()
         {
-            return await _context.Features
-                                 .Include(x => x.Environments)
-                                 .ThenInclude(x => x.UserExceptions)
-                                 .ToListAsync();
+            var result = await featureAppService.GetAll(currentEnvironment);
+
+            if (result == null || !result.Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(result);
         }
 
         [HttpGet("{name}")]
         public async Task<ActionResult<Feature>> GetFeature(string name)
         {
-            var feature = await _context.Features
-                                        .Include(x => x.Environments)
-                                        .ThenInclude(x => x.UserExceptions)
-                                        .FirstOrDefaultAsync(x => x.Name == name);
+            var result = await featureAppService.Get(name, currentEnvironment);
 
-            if (feature == null)
+            if (result == null)
             {
                 return NotFound();
             }
 
-            return feature;
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task<ActionResult<Feature>> PostFeature(Feature feature)
         {
-            _context.Features.Add(feature);
-            await _context.SaveChangesAsync();
+            var result = await featureAppService.Add(feature);
 
-            return CreatedAtAction("GetFeature", new { id = feature.Id }, feature);
+            return CreatedAtAction("GetFeature", new { id = result.Id }, result);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFeature(int id, Feature feature)
         {
-            if (id != feature.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(feature).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FeatureExists(id))
-                {
-                    return NotFound();
-                }
-                throw;
-            }
-
-            return NoContent();
+            await featureAppService.Update(id, feature);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Feature>> DeleteFeature(int id)
         {
-            var feature = await _context.Features.FindAsync(id);
-            if (feature == null)
-            {
-                return NotFound();
-            }
+            var result = await featureAppService.Remove(id);
 
-            _context.Features.Remove(feature);
-            await _context.SaveChangesAsync();
-
-            return feature;
-        }
-
-        private bool FeatureExists(int id)
-        {
-            return _context.Features.Any(e => e.Id == id);
+            return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
 }

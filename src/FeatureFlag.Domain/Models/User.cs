@@ -1,4 +1,4 @@
-﻿namespace FeatureFlag.Api.Models
+﻿namespace FeatureFlag.Domain.Models
 {
     public class User
     {
