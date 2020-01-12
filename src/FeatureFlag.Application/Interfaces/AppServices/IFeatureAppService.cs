@@ -7,9 +7,9 @@ namespace FeatureFlag.Application.Interfaces.AppServices
 {
     public interface IFeatureAppService
     {
-        Task<IEnumerable<Feature>> GetAll(string currentEnvironment);
-        Task<Feature> Get(string name, string currentEnvironment);
-        Task<Feature> Add(FeaturePostRequest feature, string currentEnvironment);
+        Task<IEnumerable<FeatureResponse>> GetAll(string currentEnvironment);
+        Task<FeatureResponse> Get(string name, string currentEnvironment);
+        Task<FeatureResponse> Add(FeaturePostRequest feature, string currentEnvironment);
         Task<bool> Update(int id, FeaturePutRequest feature, string currentEnvironment);
         Task<bool> Remove(int id, string currentEnvironment);
     }

@@ -20,22 +20,28 @@ namespace FeatureFlag.Application.AppServices
             this.mapper = mapper;
         }
 
-        public async Task<Feature> Add(FeaturePostRequest feature, string currentEnvironment)
+        public async Task<FeatureResponse> Add(FeaturePostRequest feature, string currentEnvironment)
         {
             var featureEntity = mapper.Map<Feature>(feature);
             featureEntity.Environments.First().Name = currentEnvironment;
 
-            return await featureRepository.Add(featureEntity);
+            var addedFeature = await featureRepository.Add(featureEntity);
+
+            return mapper.Map<FeatureResponse>(addedFeature);
         }
 
-        public async Task<Feature> Get(string name, string currentEnvironment)
+        public async Task<FeatureResponse> Get(string name, string currentEnvironment)
         {
-            return await featureRepository.Get(name, currentEnvironment);
+            var features = await featureRepository.Get(name, currentEnvironment);
+            
+            return mapper.Map<FeatureResponse>(features);
         }
 
-        public async Task<IEnumerable<Feature>> GetAll(string currentEnvironment)
+        public async Task<IEnumerable<FeatureResponse>> GetAll(string currentEnvironment)
         {
-            return await featureRepository.GetAll(currentEnvironment);
+            var features = await featureRepository.GetAll(currentEnvironment);
+
+            return mapper.Map<List<FeatureResponse>>(features);
         }
 
         public async Task<bool> Remove(int id, string currentEnvironment)

@@ -24,7 +24,7 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Feature>>> GetFeatures()
+        public async Task<ActionResult<IEnumerable<FeatureResponse>>> GetFeatures()
         {
             var result = await featureAppService.GetAll(currentEnvironment);
 
@@ -37,7 +37,7 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpGet("{name}")]
-        public async Task<ActionResult<Feature>> GetFeature(string name)
+        public async Task<ActionResult<FeatureResponse>> GetFeature(string name)
         {
             var result = await featureAppService.Get(name, currentEnvironment);
 
@@ -50,7 +50,7 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Feature>> PostFeature(FeaturePostRequest feature)
+        public async Task<ActionResult<FeatureResponse>> PostFeature(FeaturePostRequest feature)
         {
             var result = await featureAppService.Add(feature, currentEnvironment);
 

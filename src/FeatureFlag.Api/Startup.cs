@@ -38,7 +38,9 @@ namespace FeatureFlag.Api
             services.AddScoped<IFeatureRepository, FeatureRepository>();
             services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
 
-            services.AddAutoMapper(typeof(EntityToModelProfile), typeof(RequestToEntityProfile));
+            services.AddAutoMapper(typeof(EntityToModelProfile), 
+                typeof(RequestToEntityProfile),
+                typeof(EntityToResponseProfile));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
