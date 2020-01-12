@@ -4,7 +4,6 @@ using FeatureFlag.Application.Interfaces.Repositories;
 using FeatureFlag.Application.Models;
 using FeatureFlag.Domain.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FeatureFlag.Application.AppServices
@@ -20,10 +19,9 @@ namespace FeatureFlag.Application.AppServices
             this.mapper = mapper;
         }
 
-        public async Task<FeatureResponse> Add(FeaturePostRequest feature, string currentEnvironment)
+        public async Task<FeatureResponse> Add(FeaturePostRequest feature)
         {
             var featureEntity = mapper.Map<Feature>(feature);
-            featureEntity.Environments.First().Name = currentEnvironment;
 
             var addedFeature = await featureRepository.Add(featureEntity);
 
@@ -44,15 +42,14 @@ namespace FeatureFlag.Application.AppServices
             return mapper.Map<List<FeatureResponse>>(features);
         }
 
-        public async Task<bool> Remove(int id, string currentEnvironment)
+        public async Task<bool> Remove(string name, string currentEnvironment)
         {
-            return await featureRepository.Remove(id, currentEnvironment);
+            return await featureRepository.Remove(name, currentEnvironment);
         }
 
-        public async Task<bool> Update(int id, FeaturePutRequest feature, string currentEnvironment)
+        public async Task<bool> Update(int id, FeaturePutRequest feature)
         {
             var featureEntity = mapper.Map<Feature>(feature);
-            featureEntity.Environments.First().Name = currentEnvironment;
 
             return await featureRepository.Update(id, featureEntity);
         }

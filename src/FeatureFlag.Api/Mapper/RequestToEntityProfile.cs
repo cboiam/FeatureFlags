@@ -16,6 +16,7 @@ namespace FeatureFlag.Api.Mapper
                     new Environment
                     {
                         Enabled = src.Enabled,
+                        Name = src.Environment,
                         UsersEnabled = src.EnabledUserNames.Select(n => new User { Name = n })
                     }
                 }));
@@ -26,6 +27,7 @@ namespace FeatureFlag.Api.Mapper
                     new Environment
                     {
                         Enabled = src.Enabled,
+                        Name = src.Environment,
                         UsersEnabled = src.EnabledUserNames.Select(n => new User { Name = n })
                     }
                 }));

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FeatureFlag.Application.Interfaces.AppServices;
 using FeatureFlag.Application.Models;
 using FeatureFlag.Domain.Models;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FeatureFlag.Api.Controllers
@@ -15,18 +14,16 @@ namespace FeatureFlag.Api.Controllers
     public class FeaturesController : ControllerBase
     {
         private readonly IFeatureAppService featureAppService;
-        private readonly string currentEnvironment;
 
-        public FeaturesController(IFeatureAppService featureAppService, IWebHostEnvironment environment)
+        public FeaturesController(IFeatureAppService featureAppService)
         {
             this.featureAppService = featureAppService;
-            currentEnvironment = environment.EnvironmentName;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FeatureResponse>>> GetFeatures()
+        public async Task<ActionResult<IEnumerable<FeatureResponse>>> GetFeatures(string environment)
         {
-            var result = await featureAppService.GetAll(currentEnvironment);
+            var result = await featureAppService.GetAll(environment);
 
             if (result == null || !result.Any())
             {
@@ -37,9 +34,9 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpGet("{name}")]
-        public async Task<ActionResult<FeatureResponse>> GetFeature(string name)
+        public async Task<ActionResult<FeatureResponse>> GetFeature(string name, string environment)
         {
-            var result = await featureAppService.Get(name, currentEnvironment);
+            var result = await featureAppService.Get(name, environment);
 
             if (result == null)
             {
@@ -52,7 +49,7 @@ namespace FeatureFlag.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<FeatureResponse>> PostFeature(FeaturePostRequest feature)
         {
-            var result = await featureAppService.Add(feature, currentEnvironment);
+            var result = await featureAppService.Add(feature);
 
             return CreatedAtAction("GetFeature", new { name = result.Name }, result);
         }
@@ -60,14 +57,14 @@ namespace FeatureFlag.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFeature(int id, FeaturePutRequest feature)
         {
-            await featureAppService.Update(id, feature, currentEnvironment);
+            await featureAppService.Update(id, feature);
             return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Feature>> DeleteFeature(int id)
+        [HttpDelete("{name}")]
+        public async Task<ActionResult<Feature>> DeleteFeature(string name, string environment)
         {
-            var result = await featureAppService.Remove(id, currentEnvironment);
+            var result = await featureAppService.Remove(name, environment);
 
             return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
         }

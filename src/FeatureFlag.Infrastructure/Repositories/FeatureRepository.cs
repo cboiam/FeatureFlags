@@ -21,7 +21,7 @@ namespace FeatureFlag.Infrastructure.Repositories
             this.environmentRepository = environmentRepository;
         }
 
-        public async Task<Feature> Get(string name, string currentEnvironment)
+        public async Task<Feature> Get(string name, string environmentName)
         {
             var feature = await dbSet.AsNoTracking()
                 .Include(f => f.Environments)
@@ -30,14 +30,14 @@ namespace FeatureFlag.Infrastructure.Repositories
                 {
                     Id = f.Id,
                     Name = f.Name,
-                    Environments = f.Environments.Where(e => e.Name == currentEnvironment).ToList()
+                    Environments = f.Environments.Where(e => e.Name == environmentName).ToList()
                 })
                 .FirstOrDefaultAsync(f => f.Name == name);
 
             return mapper.Map<Feature>(feature);
         }
 
-        public async Task<IEnumerable<Feature>> GetAll(string currentEnvironment)
+        public async Task<IEnumerable<Feature>> GetAll(string environmentName)
         {
             var features = await dbSet.AsNoTracking()
                 .Include(f => f.Environments)
@@ -46,7 +46,7 @@ namespace FeatureFlag.Infrastructure.Repositories
                 {
                     Id = f.Id,
                     Name = f.Name,
-                    Environments = f.Environments.Where(e => e.Name == currentEnvironment).ToList()
+                    Environments = f.Environments.Where(e => e.Name == environmentName).ToList()
                 })
                 .ToListAsync();
 
@@ -123,10 +123,10 @@ namespace FeatureFlag.Infrastructure.Repositories
             return changes > 0;
         }
 
-        public async Task<bool> Remove(int id, string currentEnvironment)
+        public async Task<bool> Remove(string name, string environmentName)
         {
-            var feature = await Get(id);
-            var environment = feature.Environments.FirstOrDefault(e => e.Name == currentEnvironment);
+            var feature = await Get(name, environmentName);
+            var environment = feature.Environments.FirstOrDefault(e => e.Name == environmentName);
 
             return await environmentRepository.Remove(environment.Id);
         }
