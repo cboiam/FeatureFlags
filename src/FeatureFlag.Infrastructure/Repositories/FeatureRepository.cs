@@ -12,13 +12,16 @@ namespace FeatureFlag.Infrastructure.Repositories
     public class FeatureRepository : Repository<Models.Feature, Feature>, IFeatureRepository
     {
         private readonly IEnvironmentRepository environmentRepository;
+        private readonly IUserRepository userRepository;
 
         public FeatureRepository(FeatureFlagContext context,
                                  IMapper mapper,
-                                 IEnvironmentRepository environmentRepository)
+                                 IEnvironmentRepository environmentRepository,
+                                 IUserRepository userRepository)
                                     : base(context, mapper)
         {
             this.environmentRepository = environmentRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task<Feature> Get(string name, string environmentName)
@@ -84,51 +87,50 @@ namespace FeatureFlag.Infrastructure.Repositories
             var environment = entity.Environments.First();
             var existingFeature = await Get(entity.Name, environment.Name);
 
-            if(existingFeature == null)
+            if (existingFeature == null)
             {
                 throw new System.MissingMemberException("Feature doesn't exist");
             }
 
             var model = mapper.Map<Models.Feature>(entity);
             context.Entry(model).State = EntityState.Modified;
-            
-            if(existingFeature.Environments.Any())
+
+            if (existingFeature.Environments.Any())
             {
-                var environmentModel = mapper.Map<Models.Environment>(environment);
-                environmentModel.Id = existingFeature.Environments.First().Id;
+                var existingEnvironment = existingFeature.Environments.First();
 
-                context.Entry(environmentModel).State = EntityState.Modified;
-
-                var currentUsers = existingFeature.Environments.First().UsersEnabled;
-
-                var usersToRemove = currentUsers.Where(u => !environment.UsersEnabled.Any(e => e.Name == u.Name));
-                var usersToAdd = environment.UsersEnabled.Where(u => !currentUsers.Any(e => e.Name == u.Name))
-                    .Select(u => new Models.User { Name = u.Name, EnvironmentId = environmentModel.Id });
-                                
-                if (usersToRemove.Any())
-                {
-                    context.Users.RemoveRange(mapper.Map<List<Models.User>>(usersToRemove));
-                }
-
-                if (usersToAdd.Any())
-                {
-                    context.Users.AddRange(usersToAdd);
-                }
-
-                model.Environments = new List<Models.Environment> { environmentModel };
+                environmentRepository.Update(existingEnvironment, environment);
+                userRepository.UpdateRange(existingEnvironment, environment);
             }
 
-            var changes = await context.SaveChangesAsync();
-
-            return changes > 0;
+            return await Save();
         }
 
         public async Task<bool> Remove(string name, string environmentName)
         {
-            var feature = await Get(name, environmentName);
+            var feature = await dbSet.AsNoTracking()
+                .Include(f => f.Environments)
+                .ThenInclude(e => e.UsersEnabled)
+                .FirstOrDefaultAsync(f => f.Name == name);
+
+            if (feature == null)
+            {
+                throw new System.MissingMemberException("Feature doesn't exist");
+            }
+
             var environment = feature.Environments.FirstOrDefault(e => e.Name == environmentName);
 
-            return await environmentRepository.Remove(environment.Id);
+            if (environment != null && feature.Environments.Count() > 1)
+            {
+                return await environmentRepository.Remove(environment.Id);
+            }
+
+            if(environment != null)
+            {
+                return await Remove(feature.Id);
+            }
+
+            throw new System.MissingMemberException("Environment doesn't exist");
         }
     }
 }

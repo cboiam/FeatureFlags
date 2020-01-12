@@ -35,8 +35,10 @@ namespace FeatureFlag.Api
             });
 
             services.AddScoped<IFeatureAppService, FeatureAppService>();
+
             services.AddScoped<IFeatureRepository, FeatureRepository>();
             services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddAutoMapper(typeof(EntityToModelProfile), 
                 typeof(RequestToEntityProfile),
