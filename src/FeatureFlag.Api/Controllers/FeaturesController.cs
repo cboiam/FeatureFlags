@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FeatureFlag.Application.Interfaces.AppServices;
+using FeatureFlag.Application.Models;
 using FeatureFlag.Domain.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -49,24 +50,24 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Feature>> PostFeature(Feature feature)
+        public async Task<ActionResult<Feature>> PostFeature(FeaturePostRequest feature)
         {
-            var result = await featureAppService.Add(feature);
+            var result = await featureAppService.Add(feature, currentEnvironment);
 
-            return CreatedAtAction("GetFeature", new { id = result.Id }, result);
+            return CreatedAtAction("GetFeature", new { name = result.Name }, result);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFeature(int id, Feature feature)
+        public async Task<IActionResult> PutFeature(int id, FeaturePutRequest feature)
         {
-            await featureAppService.Update(id, feature);
+            await featureAppService.Update(id, feature, currentEnvironment);
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Feature>> DeleteFeature(int id)
         {
-            var result = await featureAppService.Remove(id);
+            var result = await featureAppService.Remove(id, currentEnvironment);
 
             return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
         }

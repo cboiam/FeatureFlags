@@ -6,6 +6,6 @@ namespace FeatureFlag.Domain.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Environment> Environments { get; set; }
+        public IEnumerable<Environment> Environments { get; set; }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace FeatureFlag.Domain.Models
+namespace FeatureFlag.Application.Models
 {
-    public class Environment
+    public class FeaturePutRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Enabled { get; set; }
-        public IEnumerable<User> UsersEnabled { get; set; }
+        public IEnumerable<string> EnabledUserNames { get; set; }
     }
 }

@@ -8,5 +8,6 @@ namespace FeatureFlag.Application.Interfaces.Repositories
     {
         Task<IEnumerable<Feature>> GetAll(string currentEnvironment);
         Task<Feature> Get(string name, string currentEnvironment);
+        Task<bool> Remove(int id, string currentEnvironment);
     }
 }

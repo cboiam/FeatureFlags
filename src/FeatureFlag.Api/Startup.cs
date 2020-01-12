@@ -1,4 +1,5 @@
 using AutoMapper;
+using FeatureFlag.Api.Mapper;
 using FeatureFlag.Application.AppServices;
 using FeatureFlag.Application.Interfaces.AppServices;
 using FeatureFlag.Application.Interfaces.Repositories;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace FeatureFlag.Api
 {
@@ -34,8 +36,9 @@ namespace FeatureFlag.Api
 
             services.AddScoped<IFeatureAppService, FeatureAppService>();
             services.AddScoped<IFeatureRepository, FeatureRepository>();
-            
-            //services.AddAutoMapper();
+            services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
+
+            services.AddAutoMapper(typeof(EntityToModelProfile), typeof(RequestToEntityProfile));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

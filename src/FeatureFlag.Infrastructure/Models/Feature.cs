@@ -6,6 +6,6 @@ namespace FeatureFlag.Infrastructure.Models
     public class Feature : Model
     {
         public string Name { get; set; }
-        public List<Environment> Environments { get; set; }
+        public IEnumerable<Environment> Environments { get; set; }
     }
 }

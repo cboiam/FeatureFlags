@@ -7,6 +7,7 @@ namespace FeatureFlag.Infrastructure.Models
     {
         public string Name { get; set; }
         public bool Enabled { get; set; }
-        public List<User> UsersEnabled { get; set; }
+        public IEnumerable<User> UsersEnabled { get; set; }
+        public int FeatureId { get; set; }
     }
 }

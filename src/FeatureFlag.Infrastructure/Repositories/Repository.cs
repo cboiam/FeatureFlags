@@ -89,7 +89,7 @@ namespace FeatureFlag.Infrastructure.Repositories
             return true;
         }
 
-        private async Task<bool> Save() => await context.SaveChangesAsync() > 0;
+        protected async Task<bool> Save() => await context.SaveChangesAsync() > 0;
 
         private async Task<bool> Exists(int id) => await dbSet.AnyAsync(m => m.Id == id);
     }
