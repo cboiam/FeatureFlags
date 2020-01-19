@@ -33,7 +33,8 @@ namespace FeatureFlag.Infrastructure.Repositories
                 {
                     Id = f.Id,
                     Name = f.Name,
-                    Environments = f.Environments.Where(e => e.Name == environmentName).ToList()
+                    Environments = f.Environments.Where(e => string.IsNullOrEmpty(environmentName) ||
+                                                        e.Name == environmentName)
                 })
                 .FirstOrDefaultAsync(f => f.Name == name);
 
@@ -49,7 +50,8 @@ namespace FeatureFlag.Infrastructure.Repositories
                 {
                     Id = f.Id,
                     Name = f.Name,
-                    Environments = f.Environments.Where(e => e.Name == environmentName).ToList()
+                    Environments = f.Environments.Where(e => string.IsNullOrEmpty(environmentName) || 
+                                                             e.Name == environmentName)
                 })
                 .ToListAsync();
 
@@ -71,7 +73,7 @@ namespace FeatureFlag.Infrastructure.Repositories
                 throw new System.InvalidOperationException("Environment already exists for this feature!");
             }
 
-            var addedEnvironment = await environmentRepository.Add(environment);
+            var addedEnvironment = await environmentRepository.Add(environment, existingFeature.Id);
             existingFeature.Environments = new List<Environment> { addedEnvironment };
 
             return existingFeature;
@@ -99,7 +101,7 @@ namespace FeatureFlag.Infrastructure.Repositories
             {
                 var existingEnvironment = existingFeature.Environments.First();
 
-                environmentRepository.Update(existingEnvironment, environment);
+                environmentRepository.Update(existingEnvironment, environment, existingFeature.Id);
                 userRepository.UpdateRange(existingEnvironment, environment);
             }
 

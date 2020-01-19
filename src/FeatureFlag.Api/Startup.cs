@@ -1,18 +1,14 @@
-using AutoMapper;
-using FeatureFlag.Api.Mapper;
-using FeatureFlag.Application.AppServices;
-using FeatureFlag.Application.Interfaces.AppServices;
-using FeatureFlag.Application.Interfaces.Repositories;
-using FeatureFlag.Infrastructure.DbContexts;
-using FeatureFlag.Infrastructure.Repositories;
+using FeatureFlag.Api.Configurations;
+using FeatureFlag.Infrastructure.Extensions;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
+using System.Linq;
 
 namespace FeatureFlag.Api
 {
@@ -27,22 +23,32 @@ namespace FeatureFlag.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddDbContext<FeatureFlagContext>(opt => opt.UseInMemoryDatabase("FeatureFlag"));
+            services.AddControllers()
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = c =>
+                    {
+                        var errors = c.ModelState.Values.Where(v => v.Errors.Count > 0)
+                          .SelectMany(v => v.Errors)
+                          .Select(v => v.ErrorMessage);
 
+                        return new BadRequestObjectResult(new { Errors = errors });
+                    };
+                })
+                .AddFluentValidation()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
+                });
+            
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Feature Flags", Version = "v1", });
             });
 
-            services.AddScoped<IFeatureAppService, FeatureAppService>();
-
-            services.AddScoped<IFeatureRepository, FeatureRepository>();
-            services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-
-            services.AddAutoMapper(typeof(EntityToModelProfile), 
-                typeof(RequestToEntityProfile),
-                typeof(EntityToResponseProfile));
+            services.AddDbContexts(Configuration)
+                .RegisterDependencies()
+                .RegisterValidators()
+                .RegisterMappings();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

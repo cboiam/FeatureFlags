@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FeatureFlag.Application.Interfaces.AppServices;
 using FeatureFlag.Application.Models;
-using FeatureFlag.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FeatureFlag.Api.Controllers
@@ -21,9 +21,10 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FeatureResponse>>> GetFeatures(string environment)
+        public async Task<ActionResult<IEnumerable<FeatureResponse>>> GetFeatures(string environment,
+                                                                                  [FromHeader]string userName)
         {
-            var result = await featureAppService.GetAll(environment);
+            var result = await featureAppService.GetAll(environment, userName);
 
             if (result == null || !result.Any())
             {
@@ -34,9 +35,11 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpGet("{name}")]
-        public async Task<ActionResult<FeatureResponse>> GetFeature(string name, string environment)
+        public async Task<ActionResult<FeatureResponse>> GetFeature(string name,
+                                                                    string environment,
+                                                                    [FromHeader]string userName)
         {
-            var result = await featureAppService.Get(name, environment);
+            var result = await featureAppService.Get(name, environment, userName);
 
             if (result == null)
             {
@@ -55,14 +58,14 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFeature(int id, FeaturePutRequest feature)
+        public async Task<ActionResult> PutFeature(int id, FeaturePutRequest feature)
         {
             await featureAppService.Update(id, feature);
             return Ok();
         }
 
         [HttpDelete("{name}")]
-        public async Task<ActionResult<Feature>> DeleteFeature(string name, string environment)
+        public async Task<ActionResult> DeleteFeature(string name, [Required]string environment)
         {
             var result = await featureAppService.Remove(name, environment);
 
