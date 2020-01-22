@@ -9,8 +9,8 @@ namespace FeatureFlag.Api.Configurations
         public static IServiceCollection RegisterMappings(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(EntityToModelProfile),
-                typeof(RequestToEntityProfile),
-                typeof(EntityToResponseProfile));
+                typeof(ModelToEntityProfile),
+                typeof(RequestToEntityProfile));
 
             return services;
         }

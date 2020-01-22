@@ -62,13 +62,13 @@ namespace FeatureFlag.Infrastructure.Repositories
             return await Save();
         }
 
-        public virtual async Task<bool> Update(int id, TEntity entity)
+        public virtual async Task<bool> Update(TEntity entity)
         {
             var model = mapper.Map<TModel>(entity);
 
-            if (id != model.Id)
+            if (model.Id <= 0)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Invalid Id");
             }
 
             context.Entry(model).State = EntityState.Modified;
@@ -79,9 +79,9 @@ namespace FeatureFlag.Infrastructure.Repositories
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await Exists(id))
+                if (!await Exists(model.Id))
                 {
-                    throw new MissingMemberException();
+                    throw new MissingMemberException($"{typeof(TEntity).Name} doesn't exist");
                 }
                 throw;
             }

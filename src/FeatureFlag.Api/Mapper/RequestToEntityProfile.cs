@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FeatureFlag.Application.Models;
 using FeatureFlag.Domain.Models;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace FeatureFlag.Api.Mapper
@@ -10,27 +9,16 @@ namespace FeatureFlag.Api.Mapper
     {
         public RequestToEntityProfile()
         {
-            CreateMap<FeaturePostRequest, Feature>()
-                .ForMember(dest => dest.Environments, opt => opt.MapFrom(src => new List<Environment>
-                {
-                    new Environment
-                    {
-                        Enabled = src.Enabled,
-                        Name = src.Environment,
-                        UsersEnabled = src.EnabledUserNames.Select(n => new User { Name = n })
-                    }
-                }));
+            CreateMap<FeaturePostRequest, Feature>();
+            CreateMap<FeaturePutRequest, Feature>();
 
-            CreateMap<FeaturePutRequest, Feature>()
-                .ForMember(dest => dest.Environments, opt => opt.MapFrom(src => new List<Environment> 
-                {
-                    new Environment
-                    {
-                        Enabled = src.Enabled,
-                        Name = src.Environment,
-                        UsersEnabled = src.EnabledUserNames.Select(n => new User { Name = n })
-                    }
-                }));
+            CreateMap<EnvironmentPostRequest, Environment>()
+                .ForMember(dest => dest.UsersEnabled, 
+                           opt => opt.MapFrom(src => src.EnabledUserNames.Select(n => new User { Name = n })));
+
+            CreateMap<EnvironmentPutRequest, Environment>()
+                .ForMember(dest => dest.UsersEnabled, 
+                           opt => opt.MapFrom(src => src.EnabledUserNames.Select(n => new User { Name = n })));
         }
     }
 }

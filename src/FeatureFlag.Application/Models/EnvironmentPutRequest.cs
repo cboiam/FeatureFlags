@@ -2,9 +2,11 @@
 
 namespace FeatureFlag.Application.Models
 {
-    public class FeaturePutRequest
+    public class EnvironmentPutRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool Enabled { get; set; }
+        public IEnumerable<string> EnabledUserNames { get; set; }
     }
 }

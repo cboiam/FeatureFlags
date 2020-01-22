@@ -19,6 +19,7 @@ namespace FeatureFlag.Api.Configurations
         private static IServiceCollection AddAppServices(this IServiceCollection services)
         {
             services.AddScoped<IFeatureAppService, FeatureAppService>();
+            services.AddScoped<IEnvironmentAppService, EnvironmentAppService>();
 
             return services;
         }

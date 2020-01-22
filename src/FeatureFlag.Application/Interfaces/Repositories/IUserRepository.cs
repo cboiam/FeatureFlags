@@ -1,9 +1,11 @@
 ﻿using FeatureFlag.Domain.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FeatureFlag.Application.Interfaces.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        void UpdateRange(Environment currentEnvironment, Environment requestedEnvironment);
+        Task<bool> UpdateRange(IEnumerable<User> users, int environmentId);
     }
 }

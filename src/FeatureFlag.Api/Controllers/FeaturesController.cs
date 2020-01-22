@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using FeatureFlag.Application.Interfaces.AppServices;
+using FeatureFlag.Application.Models;
+using FeatureFlag.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using FeatureFlag.Application.Interfaces.AppServices;
-using FeatureFlag.Application.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FeatureFlag.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/features")]
     [ApiController]
     public class FeaturesController : ControllerBase
     {
@@ -21,10 +20,9 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FeatureResponse>>> GetFeatures(string environment,
-                                                                                  [FromHeader]string userName)
+        public async Task<ActionResult<Feature>> GetAll()
         {
-            var result = await featureAppService.GetAll(environment, userName);
+            var result = await featureAppService.GetAll();
 
             if (result == null || !result.Any())
             {
@@ -35,11 +33,9 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpGet("{name}")]
-        public async Task<ActionResult<FeatureResponse>> GetFeature(string name,
-                                                                    string environment,
-                                                                    [FromHeader]string userName)
+        public async Task<ActionResult<Feature>> Get(string name)
         {
-            var result = await featureAppService.Get(name, environment, userName);
+            var result = await featureAppService.Get(name);
 
             if (result == null)
             {
@@ -50,24 +46,25 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<FeatureResponse>> PostFeature(FeaturePostRequest feature)
+        public async Task<ActionResult<Feature>> Create(FeaturePostRequest feature)
         {
             var result = await featureAppService.Add(feature);
 
-            return CreatedAtAction("GetFeature", new { name = result.Name }, result);
+            return CreatedAtAction("Get", new { name = result.Name }, result);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> PutFeature(int id, FeaturePutRequest feature)
+        [HttpPut]
+        public async Task<ActionResult> Update(FeaturePutRequest feature)
         {
-            await featureAppService.Update(id, feature);
-            return Ok();
+            var result = await featureAppService.Update(feature);
+            
+            return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
         }
 
-        [HttpDelete("{name}")]
-        public async Task<ActionResult> DeleteFeature(string name, [Required]string environment)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
         {
-            var result = await featureAppService.Remove(name, environment);
+            var result = await featureAppService.Remove(id);
 
             return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
         }

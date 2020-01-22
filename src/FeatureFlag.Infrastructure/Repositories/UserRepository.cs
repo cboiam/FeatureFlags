@@ -4,6 +4,7 @@ using FeatureFlag.Domain.Models;
 using FeatureFlag.Infrastructure.DbContexts;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FeatureFlag.Infrastructure.Repositories
 {
@@ -12,24 +13,23 @@ namespace FeatureFlag.Infrastructure.Repositories
         public UserRepository(FeatureFlagContext context, IMapper mapper) 
             : base(context, mapper) { }
 
-        public void UpdateRange(Environment currentEnvironment, Environment requestedEnvironment)
+        public async Task<bool> UpdateRange(IEnumerable<User> users, int environmentId)
         {
-            var currentUsers = currentEnvironment.UsersEnabled;
-            var requestedUsers = requestedEnvironment.UsersEnabled;
-
-            var usersToRemove = currentUsers.Where(u => !requestedUsers.Any(e => e.Name == u.Name));
-            var usersToAdd = requestedUsers.Where(u => !currentUsers.Any(e => e.Name == u.Name))
-                .Select(u => new Models.User { Name = u.Name, EnvironmentId = currentEnvironment.Id });
+            dbSet.RemoveRange();
+            var usersToRemove = dbSet.Where(u => u.EnvironmentId == environmentId && !users.Any(e => e.Name == u.Name));
+            var usersToAdd = dbSet.Where(u => u.EnvironmentId == environmentId && !users.Any(e => e.Name == u.Name));
 
             if (usersToRemove.Any())
             {
-                context.Users.RemoveRange(mapper.Map<List<Models.User>>(usersToRemove));
+                context.Users.RemoveRange(usersToRemove);
             }
 
             if (usersToAdd.Any())
             {
                 context.Users.AddRange(usersToAdd);
             }
+
+            return await Save();
         }
     }
 }
