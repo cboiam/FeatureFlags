@@ -1,0 +1,18 @@
+<div class="feature-container card">
+    <div class="feature row bg-light">
+        <div class="feature-info feature-name" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapse">
+            <span>{{ feature.name }}</span>
+        </div>
+        <div class="feature-info">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" [id]="'feature-enabled-' + feature.id" [checked]="enabled()" disabled>
+                <label class="custom-control-label" [for]="'feature-enabled-' + feature.id"></label>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div *ngFor="let environment of feature.environments" [ngbCollapse]="isCollapsed">
+            <app-environment [environment]="environment"></app-environment>
+        </div>
+    </div>
+</div>

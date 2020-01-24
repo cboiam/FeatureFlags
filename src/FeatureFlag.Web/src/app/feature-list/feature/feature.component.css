@@ -1,0 +1,28 @@
+.feature-container {
+    margin: 20px 0;
+    border: 1px solid #eee;
+}
+
+.feature {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    height: 50px;
+}
+
+.feature-info {
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+}
+
+.feature-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+}
+
+.row {
+    margin: 0;
+}

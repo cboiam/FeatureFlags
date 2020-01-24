@@ -1,0 +1,30 @@
+.environment-container {
+    border-radius: 0;
+}
+
+.environment {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    height: 50px;
+    padding: 0 15px 0 30px;
+}
+
+.environment-info {
+    display: flex;
+    align-items: center;
+}
+
+.environment-name {
+    width: 100%;
+    cursor: pointer;
+}
+
+.users {
+    padding: 8px 30px;
+    font-size: 0.8rem;
+}
+
+.row {
+    margin: 0;
+}
