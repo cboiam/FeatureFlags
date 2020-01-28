@@ -10,8 +10,9 @@ import { environment } from '../../../../environments/environment';
 export class EnvironmentComponent implements OnInit {
 
   @Input() public environment: Environment;
-  public isCollapsed = true;
   public users = (): string => this.environment && this.environment.usersEnabled.map(u => u.name).join(", ");
+  public hasUsers = (): boolean => this.environment && this.environment.usersEnabled && this.environment.usersEnabled.length > 0;
+  public isCollapsed = true;
 
   constructor() { }
 

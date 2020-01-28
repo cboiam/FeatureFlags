@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <div class="users" [ngbCollapse]="isCollapsed">
+    <div class="users" [ngbCollapse]="isCollapsed" *ngIf="hasUsers()">
         {{ users() }}
     </div>
 </div>
