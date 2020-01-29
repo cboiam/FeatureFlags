@@ -1,0 +1,21 @@
+.feature-form {
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.feature-header, .environments-header, .environment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.environment-enabled {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.environment-enabled label {
+    margin: 0 10px 0 0;
+}

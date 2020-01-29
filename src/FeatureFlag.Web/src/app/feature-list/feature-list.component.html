@@ -2,4 +2,16 @@
     <div *ngFor="let feature of features">
         <app-feature [feature]="feature"></app-feature>
     </div>
+
+    <button *ngIf="!isFeatureFormVisible" class="btn btn-light add-feature" (click)="showFeatureForm()">
+        <fa-icon [icon]="faPlus"></fa-icon>
+    </button>
+
+    <div *ngIf="isFeatureFormVisible">
+        <app-feature-form [closeFeatureForm]="closeFeatureForm" [showAlert]="showAlert" [addFeature]="addFeature"></app-feature-form>
+    </div>
+
+    <ngb-toast class="message" [class.visible]="isAlertVisible">
+        {{ alertMessage }}
+    </ngb-toast>
 </div>

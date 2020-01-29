@@ -1,6 +1,7 @@
 <div class="feature-container card">
     <div class="feature row bg-light">
-        <div class="feature-info feature-name" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapse">
+        <div class="feature-info feature-name" (click)="isEnvironmentsVisible = !isEnvironmentsVisible" [attr.aria-expanded]="!isEnvironmentsVisible"
+            aria-controls="collapse">
             <span>{{ feature.name }}</span>
         </div>
         <div class="feature-info">
@@ -11,7 +12,7 @@
         </div>
     </div>
     <div>
-        <div *ngFor="let environment of feature.environments" [ngbCollapse]="isCollapsed">
+        <div class="feature-environments" *ngFor="let environment of feature.environments" [ngbCollapse]="isEnvironmentsVisible">
             <app-environment [environment]="environment"></app-environment>
         </div>
     </div>

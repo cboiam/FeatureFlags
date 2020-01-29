@@ -1,16 +1,22 @@
 <div class="environment-container card">
     <div class="environment row">
-        <div class="environment-info environment-name" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapse">
+        <div class="environment-info environment-name">
             <span>{{ environment.name }}</span>
         </div>
         <div class="environment-info">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" [id]="'environment-enabled-' + environment.id" [checked]="environment.enabled">
+            <div class="environment-users">
+                <button class="btn" (click)="isUsersVisible = !isUsersVisible" [attr.aria-expanded]="!isUsersVisible" aria-controls="collapse">
+                    <fa-icon [icon]="faUsers"></fa-icon>
+                </button>
+            </div>
+            <div class="environment-toggle custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" [id]="'environment-enabled-' + environment.id" [checked]="environment.enabled"
+                    (change)="toggle()">
                 <label class="custom-control-label" [for]="'environment-enabled-' + environment.id"></label>
             </div>
         </div>
     </div>
-    <div class="users" [ngbCollapse]="isCollapsed" *ngIf="hasUsers()">
+    <div class="users" [ngbCollapse]="isUsersVisible" *ngIf="hasUsers()">
         {{ users() }}
     </div>
 </div>

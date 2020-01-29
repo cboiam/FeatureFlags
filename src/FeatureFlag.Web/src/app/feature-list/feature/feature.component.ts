@@ -7,9 +7,8 @@ import Feature from '../models/Feature';
   styleUrls: ['./feature.component.css']
 })
 export class FeatureComponent implements OnInit {
-
   @Input() public feature: Feature;
-  public isCollapsed = true;
+  public isEnvironmentsVisible = true;
 
   public enabled = (): boolean => this.feature.environments &&
     !this.feature.environments.some((e) => !e.enabled);

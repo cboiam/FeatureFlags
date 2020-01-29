@@ -35,7 +35,7 @@ namespace FeatureFlag.Infrastructure.Repositories
 
         public override async Task<Feature> Add(Feature entity)
         {
-            if (await dbSet.AnyAsync(f => f.Name == entity.Name))
+            if (!await dbSet.AnyAsync(f => f.Name == entity.Name))
             {
                 return await base.Add(entity);
             }

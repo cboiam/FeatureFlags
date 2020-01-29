@@ -1,5 +1,6 @@
 .environment-container {
     border-radius: 0;
+    border-bottom: none;
 }
 
 .environment {
@@ -17,7 +18,10 @@
 
 .environment-name {
     width: 100%;
-    cursor: pointer;
+}
+
+.environment-users {
+    margin: 5px;
 }
 
 .users {
