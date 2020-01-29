@@ -4,7 +4,7 @@
             <span>{{ environment.name }}</span>
         </div>
         <div class="environment-info">
-            <div class="environment-users">
+            <div class="environment-users" *ngIf="hasUsers()">
                 <button class="btn" (click)="isUsersVisible = !isUsersVisible" [attr.aria-expanded]="!isUsersVisible" aria-controls="collapse">
                     <fa-icon [icon]="faUsers"></fa-icon>
                 </button>
