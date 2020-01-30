@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FeatureFlag.Application.Models;
 using FeatureFlag.Domain.Models;
-using System.Linq;
 
 namespace FeatureFlag.Api.Mapper
 {
@@ -12,13 +11,10 @@ namespace FeatureFlag.Api.Mapper
             CreateMap<FeaturePostRequest, Feature>();
             CreateMap<FeaturePutRequest, Feature>();
 
-            CreateMap<EnvironmentPostRequest, Environment>()
-                .ForMember(dest => dest.UsersEnabled, 
-                           opt => opt.MapFrom(src => src.UsersEnabled.Select(n => new User { Name = n })));
+            CreateMap<EnvironmentPostRequest, Environment>();
+            CreateMap<EnvironmentPutRequest, Environment>();
 
-            CreateMap<EnvironmentPutRequest, Environment>()
-                .ForMember(dest => dest.UsersEnabled, 
-                           opt => opt.MapFrom(src => src.UsersEnabled.Select(n => new User { Name = n })));
+            CreateMap<UserRequest, User>();
         }
     }
 }

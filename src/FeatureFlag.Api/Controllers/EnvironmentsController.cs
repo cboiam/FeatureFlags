@@ -59,7 +59,11 @@ namespace FeatureFlag.Api.Controllers
         public async Task<ActionResult<Environment>> Create(EnvironmentPostRequest environment)
         {
             var result = await environmentAppService.Add(environment);
-            return CreatedAtAction("Get", result);
+
+            var jsonResult = new JsonResult(result);
+            jsonResult.StatusCode = (int)HttpStatusCode.Created;
+            
+            return jsonResult;
         }
 
         [HttpPut("environments")]

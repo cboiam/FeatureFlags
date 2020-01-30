@@ -31,20 +31,21 @@ export class EnvironmentAddFormComponent implements OnInit {
       return;
     }
 
-    var userNames = this.userNames.split(",")
-      .filter(u => u !== "")
+    this.environment.usersEnabled = this.userNames.split(",")
       .map(u => {
         var user = new User();
         user.name = u.trim();
 
         return user;
-      });
+      })
+      .filter(u => u.name !== "");
 
-    this.environment.usersEnabled = userNames;
-
-    this.service.addEnvironment(this.environment).subscribe(response => {
-      this.addEnvironment(response.body);
-    }, error => this.toastService.alert("Error while adding environment"));
+    this.service.addEnvironment(this.environment).subscribe(response =>
+      {
+        this.addEnvironment(response.body);
+        this.closeForm();
+      },
+      error => this.toastService.alert("Error while adding environment"));
   }
 
   closeForm() {

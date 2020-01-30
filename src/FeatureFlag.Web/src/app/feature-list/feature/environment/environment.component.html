@@ -4,12 +4,6 @@
       <span>{{ environment.name }}</span>
     </div>
     <div class="environment-info">
-      <button class="btn environment-control">
-        <fa-icon [icon]="faEdit"></fa-icon>
-      </button>
-      <button class="btn environment-control" (click)="removeEnvironment()">
-        <fa-icon [icon]="faTrashAlt"></fa-icon>
-      </button>
       <button
         class="btn environment-control"
         *ngIf="hasUsers()"
@@ -18,6 +12,12 @@
         aria-controls="collapse"
       >
         <fa-icon [icon]="faUsers"></fa-icon>
+      </button>
+      <button class="btn environment-control">
+        <fa-icon [icon]="faEdit"></fa-icon>
+      </button>
+      <button class="btn environment-control" (click)="removeEnvironment()">
+        <fa-icon [icon]="faTrashAlt"></fa-icon>
       </button>
       <div class="environment-toggle custom-control custom-switch">
         <input

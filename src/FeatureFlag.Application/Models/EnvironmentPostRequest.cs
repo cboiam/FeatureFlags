@@ -6,7 +6,7 @@ namespace FeatureFlag.Application.Models
     {
         public string Name { get; set; }
         public bool Enabled { get; set; }
-        public IEnumerable<string> UsersEnabled { get; set; }
+        public IEnumerable<UserRequest> UsersEnabled { get; set; }
         public int FeatureId { get; set; }
     }
 }

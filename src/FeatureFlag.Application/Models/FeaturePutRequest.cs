@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FeatureFlag.Application.Models
+﻿namespace FeatureFlag.Application.Models
 {
     public class FeaturePutRequest
     {
