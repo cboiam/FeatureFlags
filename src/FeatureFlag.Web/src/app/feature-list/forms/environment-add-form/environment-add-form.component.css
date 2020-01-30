@@ -1,0 +1,25 @@
+.environment-form {
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.environment-header, .environment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.environment-enabled {
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.environment-enabled label {
+    margin: 0 10px 0 0;
+}
+
+.environment-users {
+    margin-right: 10px;
+}

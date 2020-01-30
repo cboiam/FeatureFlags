@@ -1,1 +1,30 @@
-<p>environment-add-form works!</p>
+<div class="environment-form-container">
+    <div class="card environment-form">
+        <form #environmentForm="ngForm" (ngSubmit)="onSubmit(environmentForm)" class="container">
+            <div class="environment-header">
+                <h4>Add environment</h4>
+                <button class="btn" (click)="closeForm()" type="reset">
+                    <fa-icon [icon]="faTimes"></fa-icon>
+                </button>
+            </div>
+
+                <div class="form-group">
+                    <label for="environmentName">Name: </label>
+                    <div class="environment">
+                        <input [(ngModel)]="environment.name" type="text" name="environmentName" id="environmentName" required class="form-control form-control-sm">
+                        <div class="form-check environment-enabled">
+                            <label for="environmentEnabled">Enabled</label>
+                            <input [(ngModel)]="environment.enabled" type="checkbox" name="environmentEnabled" id="environmentEnabled">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="userNames">User names: </label>
+                    <div class="environment">
+                        <input [(ngModel)]="userNames" type="text" name="environmentName" id="environmentName" class="form-control form-control-sm environment-users">
+                        <button class="btn btn-sm btn-success" type="submit">Save</button>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>

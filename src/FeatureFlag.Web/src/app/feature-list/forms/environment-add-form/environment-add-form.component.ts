@@ -1,4 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
+import { NgForm } from '@angular/forms';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Environment from '../../models/Environment';
 
 @Component({
   selector: "app-environment-add-form",
@@ -6,7 +9,19 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./environment-add-form.component.css"]
 })
 export class EnvironmentAddFormComponent implements OnInit {
+  environment = new Environment();
+  userNames: string;
+  faTimes = faTimes;
+
   constructor() {}
 
   ngOnInit() {}
+
+  onSubmit(form: NgForm){
+    console.log(form.value);
+  }
+
+  closeForm(){
+    console.log("close");
+  }
 }
