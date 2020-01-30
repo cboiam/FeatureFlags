@@ -4,6 +4,7 @@ import { faTrashAlt, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FeatureService } from "../feature.service";
 import { ToastService } from "src/app/shared/toast/toast.service";
 import { isNullOrUndefined } from "util";
+import Environment from '../models/Environment';
 
 @Component({
   selector: "app-feature",
@@ -15,6 +16,7 @@ export class FeatureComponent implements OnInit {
   @Input() public removeFeatureFromList: (featureId: number) => void;
   public isEnvironmentsVisible = true;
   isEditFormVisible = false;
+  isAddEnvironmentFormVisible = false;
 
   public faTrashAlt = faTrashAlt;
   public faEdit = faEdit;
@@ -53,6 +55,18 @@ export class FeatureComponent implements OnInit {
     this.isEditFormVisible = false;
   };
 
+  showAddEnvironmentForm() {
+    this.isAddEnvironmentFormVisible = true;
+  }
+
+  public closeAddEnvironmentForm = () => {
+    this.isAddEnvironmentFormVisible = false;
+  };
+
+  public addEnvironment = (environment: Environment) => {
+    this.feature.environments.push(environment);
+  }
+
   removeEnvironment = (environmentId: number) => {
     const environmentIndex = this.feature.environments.findIndex(
       e => e.id === environmentId
@@ -63,7 +77,7 @@ export class FeatureComponent implements OnInit {
   constructor(
     private service: FeatureService,
     private toastService: ToastService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

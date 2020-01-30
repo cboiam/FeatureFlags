@@ -14,11 +14,11 @@ namespace FeatureFlag.Api.Mapper
 
             CreateMap<EnvironmentPostRequest, Environment>()
                 .ForMember(dest => dest.UsersEnabled, 
-                           opt => opt.MapFrom(src => src.EnabledUserNames.Select(n => new User { Name = n })));
+                           opt => opt.MapFrom(src => src.UsersEnabled.Select(n => new User { Name = n })));
 
             CreateMap<EnvironmentPutRequest, Environment>()
                 .ForMember(dest => dest.UsersEnabled, 
-                           opt => opt.MapFrom(src => src.EnabledUserNames.Select(n => new User { Name = n })));
+                           opt => opt.MapFrom(src => src.UsersEnabled.Select(n => new User { Name = n })));
         }
     }
 }

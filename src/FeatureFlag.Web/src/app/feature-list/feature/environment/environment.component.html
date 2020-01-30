@@ -4,11 +4,11 @@
       <span>{{ environment.name }}</span>
     </div>
     <div class="environment-info">
-      <button class="btn environment-control" (click)="removeEnvironment()">
-        <fa-icon [icon]="faTrashAlt"></fa-icon>
-      </button>
       <button class="btn environment-control">
         <fa-icon [icon]="faEdit"></fa-icon>
+      </button>
+      <button class="btn environment-control" (click)="removeEnvironment()">
+        <fa-icon [icon]="faTrashAlt"></fa-icon>
       </button>
       <button
         class="btn environment-control"

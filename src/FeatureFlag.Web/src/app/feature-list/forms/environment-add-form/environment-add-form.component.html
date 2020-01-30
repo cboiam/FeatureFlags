@@ -21,7 +21,10 @@
                 <div class="form-group">
                     <label for="userNames">User names: </label>
                     <div class="environment">
-                        <input [(ngModel)]="userNames" type="text" name="environmentName" id="environmentName" class="form-control form-control-sm environment-users">
+                        <div class="environment-users">
+                            <input [(ngModel)]="userNames" type="text" name="userNames" id="userNames" class="form-control form-control-sm">
+                            <small id="usersHelp" class="form-text text-muted">Add the enabled users separated by commas</small>
+                        </div>
                         <button class="btn btn-sm btn-success" type="submit">Save</button>
                     </div>
                 </div>

@@ -1,5 +1,4 @@
 .environment-form {
-    margin-top: 20px;
     padding: 15px;
 }
 
@@ -7,6 +6,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.environment {
+    align-items: flex-start;
 }
 
 .environment-enabled {
@@ -21,5 +24,6 @@
 }
 
 .environment-users {
-    margin-right: 10px;
+    padding-right: 10px;
+    width: 100%;
 }

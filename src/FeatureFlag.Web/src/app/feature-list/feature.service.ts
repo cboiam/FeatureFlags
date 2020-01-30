@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import Feature from "./models/Feature";
+import Environment from './models/Environment';
 
 const featureBaseUrl = `${environment.featureBaseUrl}/features`;
 const environmentBaseUrl = `${environment.featureBaseUrl}/environments`;
@@ -32,6 +33,12 @@ export class FeatureService {
 
   public removeFeature = (featureId: number) => {
     return this.client.delete(`${featureBaseUrl}/${featureId}`).toPromise();
+  };
+
+  public addEnvironment = (environment: Environment) => {
+    return this.client.post<Environment>(environmentBaseUrl, environment, {
+      observe: "response"
+    });
   };
 
   public removeEnvironment = (environmentId: number) => {

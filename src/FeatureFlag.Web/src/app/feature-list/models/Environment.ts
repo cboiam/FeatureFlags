@@ -10,4 +10,5 @@ export default class Environment {
     name: string;
     enabled: boolean;
     usersEnabled: Array<User>;
+    featureId: number;
 }
