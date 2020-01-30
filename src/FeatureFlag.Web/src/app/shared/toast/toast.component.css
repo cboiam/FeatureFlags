@@ -1,0 +1,21 @@
+.toast {
+  position: fixed;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: -100px;
+
+  transition: bottom 1s;
+}
+
+.toast.visible {
+  position: fixed;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+}
+
+.message {
+  padding: 4px 0;
+}

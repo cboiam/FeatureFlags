@@ -1,22 +1,40 @@
 <div class="environment-container card">
-    <div class="environment row">
-        <div class="environment-info environment-name">
-            <span>{{ environment.name }}</span>
-        </div>
-        <div class="environment-info">
-            <div class="environment-users" *ngIf="hasUsers()">
-                <button class="btn" (click)="isUsersVisible = !isUsersVisible" [attr.aria-expanded]="!isUsersVisible" aria-controls="collapse">
-                    <fa-icon [icon]="faUsers"></fa-icon>
-                </button>
-            </div>
-            <div class="environment-toggle custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" [id]="'environment-enabled-' + environment.id" [checked]="environment.enabled"
-                    (change)="toggle()">
-                <label class="custom-control-label" [for]="'environment-enabled-' + environment.id"></label>
-            </div>
-        </div>
+  <div class="environment row">
+    <div class="environment-info environment-name">
+      <span>{{ environment.name }}</span>
     </div>
-    <div class="users" [ngbCollapse]="isUsersVisible" *ngIf="hasUsers()">
-        {{ users() }}
+    <div class="environment-info">
+      <button class="btn environment-control" (click)="removeEnvironment()">
+        <fa-icon [icon]="faTrashAlt"></fa-icon>
+      </button>
+      <button class="btn environment-control">
+        <fa-icon [icon]="faEdit"></fa-icon>
+      </button>
+      <button
+        class="btn environment-control"
+        *ngIf="hasUsers()"
+        (click)="isUsersVisible = !isUsersVisible"
+        [attr.aria-expanded]="!isUsersVisible"
+        aria-controls="collapse"
+      >
+        <fa-icon [icon]="faUsers"></fa-icon>
+      </button>
+      <div class="environment-toggle custom-control custom-switch">
+        <input
+          type="checkbox"
+          class="custom-control-input"
+          [id]="'environment-enabled-' + environment.id"
+          [checked]="environment.enabled"
+          (change)="toggle()"
+        />
+        <label
+          class="custom-control-label"
+          [for]="'environment-enabled-' + environment.id"
+        ></label>
+      </div>
     </div>
+  </div>
+  <div class="users" [ngbCollapse]="isUsersVisible" *ngIf="hasUsers()">
+    {{ users() }}
+  </div>
 </div>

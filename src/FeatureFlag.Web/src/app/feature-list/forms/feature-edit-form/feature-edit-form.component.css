@@ -1,0 +1,21 @@
+.feature-form {
+  padding: 15px;
+}
+
+.feature-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.feature {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.feature-name {
+  width: 100%;
+  margin-right: 15px;
+  margin-bottom: 0;
+}

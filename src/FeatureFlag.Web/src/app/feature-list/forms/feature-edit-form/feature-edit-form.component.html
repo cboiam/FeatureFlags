@@ -1,0 +1,31 @@
+<div class="feature-form-container">
+  <div class="feature-form">
+    <form
+      #featureForm="ngForm"
+      (ngSubmit)="onSubmit(featureForm)"
+      class="container"
+    >
+      <div class="feature-header">
+        <h4>Edit feature {{ feature.name }}</h4>
+        <button class="btn" (click)="closeEditForm()" type="reset">
+          <fa-icon [icon]="faTimes"></fa-icon>
+        </button>
+      </div>
+
+      <div class="feature">
+        <div class="form-group feature-name">
+          <label for="featureName">Name: </label>
+          <input
+            [(ngModel)]="updatingFeature.name"
+            type="text"
+            name="featureName"
+            id="featureName"
+            required
+            class="form-control form-control-sm"
+          />
+        </div>
+        <button class="btn btn-sm btn-success" type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

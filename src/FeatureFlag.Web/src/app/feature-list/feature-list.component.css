@@ -1,32 +1,14 @@
 .feature-list {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 
 .add-feature {
-    background: rgba(197, 206, 214, 0.7);
-    border: none;
-    width: 100%;
-    height: 40px;
+  background: rgba(197, 206, 214, 0.7);
+  border: none;
+  width: 100%;
+  height: 40px;
 }
 
 .add-feature:hover {
-    background: rgba(171, 178, 189, 0.7);
-}
-
-.message {
-    position: fixed;
-    margin: auto;
-    left: 0;
-    right: 0;
-    bottom: -100px;
-
-    transition: bottom 2s;
-}
-
-.message.visible {
-    position: fixed;
-    margin: auto;
-    left: 0;
-    right: 0;
-    bottom: 50px;
+  background: rgba(171, 178, 189, 0.7);
 }

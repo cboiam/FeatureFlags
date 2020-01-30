@@ -1,17 +1,23 @@
 <div class="container feature-list">
-    <div *ngFor="let feature of features">
-        <app-feature [feature]="feature"></app-feature>
-    </div>
+  <div *ngFor="let feature of features">
+    <app-feature
+      [feature]="feature"
+      [removeFeatureFromList]="removeFeature"
+    ></app-feature>
+  </div>
 
-    <button *ngIf="!isFeatureFormVisible" class="btn btn-light add-feature" (click)="showFeatureForm()">
-        <fa-icon [icon]="faPlus"></fa-icon>
-    </button>
+  <button
+    *ngIf="!isFeatureFormVisible"
+    class="btn btn-light add-feature"
+    (click)="showFeatureForm()"
+  >
+    <fa-icon [icon]="faPlus"></fa-icon>
+  </button>
 
-    <div *ngIf="isFeatureFormVisible">
-        <app-feature-form [closeFeatureForm]="closeFeatureForm" [showAlert]="showAlert" [addFeature]="addFeature"></app-feature-form>
-    </div>
-
-    <ngb-toast class="message" [class.visible]="isAlertVisible">
-        {{ alertMessage }}
-    </ngb-toast>
+  <div *ngIf="isFeatureFormVisible">
+    <app-feature-add-form
+      [closeFeatureForm]="closeFeatureForm"
+      [addFeature]="addFeature"
+    ></app-feature-add-form>
+  </div>
 </div>
