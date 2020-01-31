@@ -48,6 +48,11 @@ namespace FeatureFlag.Infrastructure.Repositories
 
         public async Task<Environment> Add(Environment entity, int featureId)
         {
+            if (dbSet.Any(e => e.FeatureId == featureId && e.Name == entity.Name))
+            {
+                throw new System.InvalidOperationException("Environment already exist for this feature");
+            }
+
             var model = mapper.Map<Models.Environment>(entity);
             model.FeatureId = featureId;
 
