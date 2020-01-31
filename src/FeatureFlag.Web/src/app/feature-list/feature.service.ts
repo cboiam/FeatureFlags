@@ -41,6 +41,10 @@ export class FeatureService {
     });
   };
 
+  public editEnvironment = (environment: Environment) => {
+    return this.client.put(environmentBaseUrl, environment).toPromise();
+  };
+
   public removeEnvironment = (environmentId: number) => {
     return this.client
       .delete(`${environmentBaseUrl}/${environmentId}`)

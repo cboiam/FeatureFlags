@@ -13,7 +13,7 @@
       >
         <fa-icon [icon]="faUsers"></fa-icon>
       </button>
-      <button class="btn environment-control">
+      <button class="btn environment-control" (click)="showEditForm()">
         <fa-icon [icon]="faEdit"></fa-icon>
       </button>
       <button class="btn environment-control" (click)="removeEnvironment()">
@@ -34,7 +34,13 @@
       </div>
     </div>
   </div>
-  <div class="users" [ngbCollapse]="isUsersVisible" *ngIf="hasUsers()">
+  <div class="users" [ngbCollapse]="isUsersVisible" *ngIf="hasUsers()">  
     {{ users() }}
   </div>
+  <app-environment-edit-form 
+    *ngIf="isEditFormVisible" 
+    [environment]="environment" 
+    [closeEditForm]="closeEditForm"
+    [editEnvironment]="editEnvironment">
+  </app-environment-edit-form>
 </div>

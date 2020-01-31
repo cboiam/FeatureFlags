@@ -13,6 +13,7 @@ import { FormsModule } from "@angular/forms";
 import { EnvironmentAddFormComponent } from "./feature-list/forms/environment-add-form/environment-add-form.component";
 import { SharedModule } from "./shared/shared.module";
 import { FeatureEditFormComponent } from './feature-list/forms/feature-edit-form/feature-edit-form.component';
+import { EnvironmentEditFormComponent } from './feature-list/forms/environment-edit-form/environment-edit-form.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FeatureEditFormComponent } from './feature-list/forms/feature-edit-form
     EnvironmentComponent,
     FeatureAddFormComponent,
     EnvironmentAddFormComponent,
-    FeatureEditFormComponent
+    FeatureEditFormComponent,
+    EnvironmentEditFormComponent
   ],
   imports: [
     BrowserModule,

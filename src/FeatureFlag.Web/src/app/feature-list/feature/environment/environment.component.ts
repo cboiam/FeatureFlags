@@ -12,6 +12,8 @@ import { ToastService } from "src/app/shared/toast/toast.service";
 export class EnvironmentComponent implements OnInit {
   @Input() public environment: Environment;
   @Input() public removeEnvironmentFromList: (environmentId: number) => void;
+  public isEditFormVisible = false;
+
   public faUsers = faUsers;
   public faTrashAlt = faTrashAlt;
   public faEdit = faEdit;
@@ -37,6 +39,20 @@ export class EnvironmentComponent implements OnInit {
         );
       });
   };
+
+  showEditForm() {
+    this.isEditFormVisible = true;
+  }
+
+  public closeEditForm = () => {
+    this.isEditFormVisible = false;
+  }
+
+  public editEnvironment = (environment: Environment) => {
+    this.environment.name = environment.name;
+    this.environment.enabled = environment.enabled;
+    this.environment.usersEnabled = environment.usersEnabled;
+  } 
 
   removeEnvironment() {
     this.service
