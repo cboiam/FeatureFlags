@@ -38,9 +38,14 @@ namespace FeatureFlag.Infrastructure.Repositories
             return mapper.Map<List<Environment>>(environment);
         }
 
-        public override async Task<bool> Update(Environment entity)
+        public async Task<bool> Update(Environment entity, int featureId)
         {
-            var environment = await base.Update(entity);
+            await ValidateEnvironmentName(entity, featureId);
+
+            var model = mapper.Map<Models.Environment>(entity);
+            model.FeatureId = featureId;
+            
+            var environment = await base.Update(model);
             var users = await userRepository.UpdateRange(entity.UsersEnabled, entity.Id);
 
             return environment || users;
@@ -48,10 +53,7 @@ namespace FeatureFlag.Infrastructure.Repositories
 
         public async Task<Environment> Add(Environment entity, int featureId)
         {
-            if (dbSet.Any(e => e.FeatureId == featureId && e.Name == entity.Name))
-            {
-                throw new System.InvalidOperationException("Environment already exist for this feature");
-            }
+            await ValidateEnvironmentName(entity, featureId);
 
             var model = mapper.Map<Models.Environment>(entity);
             model.FeatureId = featureId;
@@ -70,6 +72,16 @@ namespace FeatureFlag.Infrastructure.Repositories
 
             context.Entry(model).State = EntityState.Modified;
             return await Save();
+        }
+
+        public async Task ValidateEnvironmentName(Environment environment, int featureId)
+        {
+            if (await dbSet.AnyAsync(e => e.FeatureId == featureId && 
+                                          e.Id != environment.Id && 
+                                          e.Name == environment.Name))
+            {
+                throw new System.InvalidOperationException("Environment already exist for this feature");
+            }
         }
     }
 }

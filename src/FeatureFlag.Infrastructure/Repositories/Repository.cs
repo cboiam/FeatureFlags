@@ -65,7 +65,11 @@ namespace FeatureFlag.Infrastructure.Repositories
         public virtual async Task<bool> Update(TEntity entity)
         {
             var model = mapper.Map<TModel>(entity);
+            return await Update(model);
+        }
 
+        protected virtual async Task<bool> Update(TModel model)
+        {
             if (model.Id <= 0)
             {
                 throw new ArgumentException("Invalid Id");

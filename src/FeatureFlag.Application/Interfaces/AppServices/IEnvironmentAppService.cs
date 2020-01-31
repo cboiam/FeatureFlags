@@ -10,8 +10,8 @@ namespace FeatureFlag.Application.Interfaces.AppServices
         Task<IEnumerable<Environment>> GetAll(string featureName);
         Task<Environment> Get(string featureName, string environmentName);
         Task<bool> CheckEnabled(string featureName, string environmentName, string userName);
-        Task<Environment> Add(EnvironmentPostRequest environment);
-        Task<bool> Update(EnvironmentPutRequest environment);
+        Task<Environment> Add(EnvironmentPostRequest environment, int featureId);
+        Task<bool> Update(EnvironmentPutRequest environment, int featureId);
         Task<bool> Remove(int id);
         Task<bool> Toggle(int id);
     }

@@ -19,10 +19,10 @@ namespace FeatureFlag.Application.AppServices
             this.mapper = mapper;
         }
 
-        public async Task<Environment> Add(EnvironmentPostRequest environment)
+        public async Task<Environment> Add(EnvironmentPostRequest environment, int featureId)
         {
             var entity = mapper.Map<Environment>(environment);
-            return await environmentRepository.Add(entity, environment.FeatureId);
+            return await environmentRepository.Add(entity, featureId);
         }
 
         public async Task<bool> CheckEnabled(string featureName, string environmentName, string userName)
@@ -57,10 +57,10 @@ namespace FeatureFlag.Application.AppServices
             return await environmentRepository.Toggle(id);
         }
 
-        public async Task<bool> Update(EnvironmentPutRequest environment)
+        public async Task<bool> Update(EnvironmentPutRequest environment, int featureId)
         {
             var entity = mapper.Map<Environment>(environment);
-            return await environmentRepository.Update(entity);
+            return await environmentRepository.Update(entity, featureId);
         }
     }
 }

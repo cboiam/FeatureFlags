@@ -55,10 +55,10 @@ namespace FeatureFlag.Api.Controllers
             return Ok(new { Enabled = result });
         }
 
-        [HttpPost("environments")]
-        public async Task<ActionResult<Environment>> Create(EnvironmentPostRequest environment)
+        [HttpPost("features/{featureId}/environments")]
+        public async Task<ActionResult<Environment>> Create(int featureId, EnvironmentPostRequest environment)
         {
-            var result = await environmentAppService.Add(environment);
+            var result = await environmentAppService.Add(environment, featureId);
 
             var jsonResult = new JsonResult(result);
             jsonResult.StatusCode = (int)HttpStatusCode.Created;
@@ -66,10 +66,10 @@ namespace FeatureFlag.Api.Controllers
             return jsonResult;
         }
 
-        [HttpPut("environments")]
-        public async Task<ActionResult> Update(EnvironmentPutRequest environment)
+        [HttpPut("features/{featureId}/environments")]
+        public async Task<ActionResult> Update(int featureId, EnvironmentPutRequest environment)
         {
-            var result = await environmentAppService.Update(environment);
+            var result = await environmentAppService.Update(environment, featureId);
 
             return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
         }
