@@ -3,7 +3,7 @@
         <form #environmentForm="ngForm" (ngSubmit)="onSubmit(environmentForm)" class="container">
             <div class="environment-header">
                 <h4>Add environment</h4>
-                <button class="btn" (click)="closeForm()" type="reset">
+                <button class="btn" (click)="closeAddEnvironmentForm()" type="reset">
                     <fa-icon [icon]="faTimes"></fa-icon>
                 </button>
             </div>

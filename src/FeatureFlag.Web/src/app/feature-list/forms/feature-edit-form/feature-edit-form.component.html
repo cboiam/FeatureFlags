@@ -1,4 +1,4 @@
-<div class="feature-form-container">
+<div class="feature-form-container card">
   <div class="feature-form">
     <form
       #featureForm="ngForm"
@@ -6,7 +6,7 @@
       class="container"
     >
       <div class="feature-header">
-        <h4>Edit feature {{ feature.name }}</h4>
+        <h4>Edit feature</h4>
         <button class="btn" (click)="closeEditForm()" type="reset">
           <fa-icon [icon]="faTimes"></fa-icon>
         </button>

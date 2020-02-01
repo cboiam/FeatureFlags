@@ -16,7 +16,6 @@ export class ToastComponent implements OnInit {
     if (isNullOrUndefined(message) && message === "") {
       return;
     }
-    console.log(message);
 
     this.messages.push(message);
 

@@ -10,6 +10,7 @@ import { ToastService } from "src/app/shared/toast/toast.service";
   styleUrls: ["./environment.component.css"]
 })
 export class EnvironmentComponent implements OnInit {
+  @Input() public featureId: number;
   @Input() public environment: Environment;
   @Input() public removeEnvironmentFromList: (environmentId: number) => void;
   public isEditFormVisible = false;
@@ -46,13 +47,13 @@ export class EnvironmentComponent implements OnInit {
 
   public closeEditForm = () => {
     this.isEditFormVisible = false;
-  }
+  };
 
   public editEnvironment = (environment: Environment) => {
     this.environment.name = environment.name;
     this.environment.enabled = environment.enabled;
     this.environment.usersEnabled = environment.usersEnabled;
-  } 
+  };
 
   removeEnvironment() {
     this.service

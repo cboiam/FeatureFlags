@@ -4,7 +4,7 @@ import { faTrashAlt, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FeatureService } from "../feature.service";
 import { ToastService } from "src/app/shared/toast/toast.service";
 import { isNullOrUndefined } from "util";
-import Environment from '../models/Environment';
+import Environment from "../models/Environment";
 
 @Component({
   selector: "app-feature",
@@ -14,9 +14,10 @@ import Environment from '../models/Environment';
 export class FeatureComponent implements OnInit {
   @Input() public feature: Feature;
   @Input() public removeFeatureFromList: (featureId: number) => void;
-  public isEnvironmentsVisible = true;
+  isEnvironmentsVisible = false;
   isEditFormVisible = false;
   isAddEnvironmentFormVisible = false;
+  isAnyFormVisible = false;
 
   public faTrashAlt = faTrashAlt;
   public faEdit = faEdit;
@@ -47,7 +48,13 @@ export class FeatureComponent implements OnInit {
     this.feature = feature;
   };
 
+  toggleEnvironments() {
+    this.closeForms();
+    this.isEnvironmentsVisible = !this.isEnvironmentsVisible;
+  }
+
   showEditForm() {
+    this.closeForms();
     this.isEditFormVisible = true;
   }
 
@@ -56,6 +63,7 @@ export class FeatureComponent implements OnInit {
   };
 
   showAddEnvironmentForm() {
+    this.closeForms();
     this.isAddEnvironmentFormVisible = true;
   }
 
@@ -63,9 +71,19 @@ export class FeatureComponent implements OnInit {
     this.isAddEnvironmentFormVisible = false;
   };
 
+  private closeForms() {
+    this.isEnvironmentsVisible = false;
+    this.isEditFormVisible = false;
+    this.isAddEnvironmentFormVisible = false;
+  }
+
+  public isFormsVisible() {
+    return this.isEditFormVisible || this.isAddEnvironmentFormVisible;
+  }
+
   public addEnvironment = (environment: Environment) => {
     this.feature.environments.push(environment);
-  }
+  };
 
   removeEnvironment = (environmentId: number) => {
     const environmentIndex = this.feature.environments.findIndex(
@@ -77,7 +95,7 @@ export class FeatureComponent implements OnInit {
   constructor(
     private service: FeatureService,
     private toastService: ToastService
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 }

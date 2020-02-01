@@ -1,46 +1,73 @@
 <div class="feature-form-container">
-    <div class="card feature-form">
-        <form #featureForm="ngForm" (ngSubmit)="onSubmit(featureForm)" class="container">
-            <div class="feature-header">
-                <h4>Add feature</h4>
-                <button class="btn" (click)="closeForm()" type="reset">
-                    <fa-icon [icon]="faTimes"></fa-icon>
-                </button>
+  <div class="card feature-form">
+    <form
+      #featureForm="ngForm"
+      (ngSubmit)="onSubmit(featureForm)"
+      class="container"
+    >
+      <div class="feature-header">
+        <h4>Add feature</h4>
+        <button class="btn" (click)="closeForm()" type="reset">
+          <fa-icon [icon]="faTimes"></fa-icon>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label for="featureName">Name: </label>
+        <input
+          [(ngModel)]="feature.name"
+          type="text"
+          name="featureName"
+          id="featureName"
+          required
+          class="form-control form-control-sm"
+        />
+      </div>
+
+      <div class="dropdown-divider"></div>
+
+      <div class="environments-header">
+        <h5>Environments</h5>
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="addEnvironment()"
+        >
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
+      </div>
+
+      <div *ngFor="let environment of feature.environments; let i = index">
+        <div class="form-group">
+          <label for="environmentName-{{ i }}">Name: </label>
+          <div class="environment">
+            <input
+              [(ngModel)]="environment.name"
+              type="text"
+              name="environmentName[{{ i }}]"
+              id="environmentName-{{ i }}"
+              required
+              class="form-control form-control-sm"
+            />
+            <div class="form-check environment-enabled">
+              <label for="environmentEnabled-{{ i }}">Enabled</label>
+              <input
+                [(ngModel)]="environment.enabled"
+                type="checkbox"
+                name="environmentEnabled[{{ i }}]"
+                id="environmentEnabled-{{ i }}"
+              />
             </div>
+            <button class="btn" (click)="removeEnvironment(i)" type="button">
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label for="featureName">Name: </label>
-                <input [(ngModel)]="feature.name" type="text" name="featureName" id="featureName" required class="form-control form-control-sm">
-            </div>
+      <div class="dropdown-divider"></div>
 
-            <div class="dropdown-divider"></div>
-
-            <div class="environments-header">
-                <h5>Environments</h5>
-                <button class="btn btn-primary" type="button" (click)="addEnvironment()">
-                    <fa-icon [icon]="faPlus"></fa-icon>
-                </button>
-            </div>
-
-            <div *ngFor="let environment of feature.environments; let i = index">
-                <div class="form-group">
-                    <label for="environmentName-{{ i }}">Name: </label>
-                    <div class="environment">
-                        <input [(ngModel)]="environment.name" type="text" name="environmentName[{{ i }}]" id="environmentName-{{ i }}" required class="form-control form-control-sm">
-                        <div class="form-check environment-enabled">
-                            <label for="environmentEnabled-{{ i }}">Enabled</label>
-                            <input [(ngModel)]="environment.enabled" type="checkbox" name="environmentEnabled[{{ i }}]" id="environmentEnabled-{{ i }}">
-                        </div>
-                        <button class="btn" (click)="removeEnvironment(i)" type="button">
-                            <fa-icon [icon]="faTimes"></fa-icon>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dropdown-divider"></div>
-
-            <button class="btn btn-danger" type="submit">Submit</button>
-        </form>
-    </div>
+      <button class="btn btn-success" type="submit">Save</button>
+    </form>
+  </div>
 </div>

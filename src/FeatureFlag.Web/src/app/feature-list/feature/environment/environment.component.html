@@ -34,13 +34,15 @@
       </div>
     </div>
   </div>
-  <div class="users" [ngbCollapse]="isUsersVisible" *ngIf="hasUsers()">  
+  <div class="users" [ngbCollapse]="isUsersVisible" *ngIf="hasUsers()">
     {{ users() }}
   </div>
-  <app-environment-edit-form 
-    *ngIf="isEditFormVisible" 
-    [environment]="environment" 
+  <app-environment-edit-form
+    *ngIf="isEditFormVisible"
+    [featureId]="featureId"
+    [environment]="environment"
     [closeEditForm]="closeEditForm"
-    [editEnvironment]="editEnvironment">
+    [editEnvironment]="editEnvironment"
+  >
   </app-environment-edit-form>
 </div>
