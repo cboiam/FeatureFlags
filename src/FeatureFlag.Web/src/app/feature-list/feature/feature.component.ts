@@ -49,8 +49,9 @@ export class FeatureComponent implements OnInit {
   };
 
   toggleEnvironments() {
+    const environmentVisible = !this.isEnvironmentsVisible;
     this.closeForms();
-    this.isEnvironmentsVisible = !this.isEnvironmentsVisible;
+    this.isEnvironmentsVisible = environmentVisible;
   }
 
   showEditForm() {
