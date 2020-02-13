@@ -1,54 +1,31 @@
-﻿using FeatureFlag.Application.Interfaces.Repositories;
-using FeatureFlag.Infrastructure.DbContexts;
+﻿using FeatureFlag.Infrastructure.DbContexts;
 using FeatureFlag.Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 
 namespace FeatureFlag.Infrastructure.Repositories
 {
-    public class Repository<TModel, TEntity> : IRepository<TEntity> where TModel : Model
+    public class Repository<TModel> where TModel : Model
     {
         protected readonly FeatureFlagContext context;
         protected readonly DbSet<TModel> dbSet;
-        protected readonly IMapper mapper;
 
-        public Repository(FeatureFlagContext context, IMapper mapper)
+        public Repository(FeatureFlagContext context)
         {
             this.context = context;
             dbSet = context.Set<TModel>();
-            this.mapper = mapper;
         }
 
-        public virtual async Task<TEntity> Add(TEntity entity)
+        protected virtual async Task<TModel> Add(TModel model)
         {
-            var model = mapper.Map<TModel>(entity);
-            
             dbSet.Add(model);
             await Save();
 
-            return mapper.Map<TEntity>(model);
+            return model;
         }
 
-        public virtual async Task<TEntity> Get(int id)
-        {
-            var model = await dbSet.AsNoTracking()
-                .FirstOrDefaultAsync(e => e.Id == id);
-
-            return mapper.Map<TEntity>(model);
-        }
-
-        public virtual async Task<IEnumerable<TEntity>> GetAll()
-        {
-            var models = await dbSet.AsNoTracking()
-                .ToListAsync();
-
-            return mapper.Map<List<TEntity>>(models);
-        }
-
-        public virtual async Task<bool> Remove(int id)
+        protected virtual async Task<bool> Remove(int id)
         {
             var model = await dbSet.FindAsync(id);
             
@@ -60,12 +37,6 @@ namespace FeatureFlag.Infrastructure.Repositories
             dbSet.Remove(model);
 
             return await Save();
-        }
-
-        public virtual async Task<bool> Update(TEntity entity)
-        {
-            var model = mapper.Map<TModel>(entity);
-            return await Update(model);
         }
 
         protected virtual async Task<bool> Update(TModel model)
@@ -85,7 +56,7 @@ namespace FeatureFlag.Infrastructure.Repositories
             {
                 if (!await Exists(model.Id))
                 {
-                    throw new MissingMemberException($"{typeof(TEntity).Name} doesn't exist");
+                    throw new MissingMemberException($"{typeof(TModel).Name} doesn't exist");
                 }
                 throw;
             }
@@ -95,6 +66,6 @@ namespace FeatureFlag.Infrastructure.Repositories
 
         protected async Task<bool> Save() => await context.SaveChangesAsync() > 0;
 
-        private async Task<bool> Exists(int id) => await dbSet.AnyAsync(m => m.Id == id);
+        protected async Task<bool> Exists(int id) => await dbSet.AnyAsync(m => m.Id == id);
     }
 }

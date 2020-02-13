@@ -1,10 +1,10 @@
 ﻿using FeatureFlag.Application.Interfaces.AppServices;
 using FeatureFlag.Application.Models;
 using FeatureFlag.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace FeatureFlag.Api.Controllers
@@ -21,11 +21,13 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpGet("features/{featureName}/environments")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<IEnumerable<Environment>>> GetAll(string featureName)
         {
             var result = await environmentAppService.GetAll(featureName);
 
-            if(result == null || !result.Any())
+            if (result == null || !result.Any())
             {
                 return NoContent();
             }
@@ -34,6 +36,8 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpGet("features/{featureName}/environments/{environmentName}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Environment>> Get(string featureName, string environmentName)
         {
             var result = await environmentAppService.Get(featureName, environmentName);
@@ -42,12 +46,12 @@ namespace FeatureFlag.Api.Controllers
             {
                 return NotFound();
             }
-
             return Ok(result);
         }
 
         [HttpGet("features/{featureName}/environments/{environmentName}/enabled")]
-        public async Task<ActionResult<Environment>> CheckEnabled(string featureName, 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<Environment>> CheckEnabled(string featureName,
                                                                   string environmentName,
                                                                   [FromHeader]string userName)
         {
@@ -56,38 +60,38 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpPost("features/{featureId}/environments")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Environment>> Create(int featureId, EnvironmentPostRequest environment)
         {
             var result = await environmentAppService.Add(environment, featureId);
-
-            var jsonResult = new JsonResult(result);
-            jsonResult.StatusCode = (int)HttpStatusCode.Created;
-            
-            return jsonResult;
+            return this.Created(result);
         }
 
         [HttpPut("features/{featureId}/environments")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Update(int featureId, EnvironmentPutRequest environment)
         {
             var result = await environmentAppService.Update(environment, featureId);
 
-            return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
+            return result ? Ok() : this.InternalServerError();
         }
 
-        [HttpPatch("environments/{id}/toggle")]
-        public async Task<ActionResult> Toggle(int id)
+        [HttpPatch("features/{featureId}/environments/{id}/toggle")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> Toggle(int featureId, int id)
         {
-            var result = await environmentAppService.Toggle(id);
+            var result = await environmentAppService.Toggle(featureId, id);
 
-            return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
+            return result ? Ok() : this.InternalServerError();
         }
 
-        [HttpDelete("environments/{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete("features/{featureId}/environments/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> Delete(int featureId, int id)
         {
-            var result = await environmentAppService.Remove(id);
+            var result = await environmentAppService.Remove(featureId, id);
 
-            return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
+            return result ? Ok() : this.InternalServerError();
         }
     }
 }

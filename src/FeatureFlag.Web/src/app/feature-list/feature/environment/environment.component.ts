@@ -30,7 +30,7 @@ export class EnvironmentComponent implements OnInit {
 
   toggle = () => {
     this.service
-      .toggle(this.environment.id)
+      .toggle(this.featureId, this.environment.id)
       .then(() => {
         this.environment.enabled = !this.environment.enabled;
       })
@@ -57,7 +57,7 @@ export class EnvironmentComponent implements OnInit {
 
   removeEnvironment() {
     this.service
-      .removeEnvironment(this.environment.id)
+      .removeEnvironment(this.featureId, this.environment.id)
       .then(() => {
         this.removeEnvironmentFromList(this.environment.id);
       })

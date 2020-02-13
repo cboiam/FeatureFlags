@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using FeatureFlag.Api.Mapper;
+using FeatureFlag.Api.Mappings;
+using FeatureFlag.Infrastructure.Mappings;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FeatureFlag.Api.Configurations

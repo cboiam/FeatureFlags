@@ -47,14 +47,14 @@ namespace FeatureFlag.Application.AppServices
             return await environmentRepository.GetAll(featureName);
         }
 
-        public async Task<bool> Remove(int id)
+        public async Task<bool> Remove(int featureId, int id)
         {
-            return await environmentRepository.Remove(id);
+            return await environmentRepository.Remove(featureId, id);
         }
 
-        public async Task<bool> Toggle(int id)
+        public async Task<bool> Toggle(int featureId, int id)
         {
-            return await environmentRepository.Toggle(id);
+            return await environmentRepository.Toggle(featureId, id);
         }
 
         public async Task<bool> Update(EnvironmentPutRequest environment, int featureId)

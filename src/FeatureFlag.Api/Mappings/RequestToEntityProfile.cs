@@ -2,7 +2,7 @@
 using FeatureFlag.Application.Models;
 using FeatureFlag.Domain.Models;
 
-namespace FeatureFlag.Api.Mapper
+namespace FeatureFlag.Api.Mappings
 {
     public class RequestToEntityProfile : Profile
     {

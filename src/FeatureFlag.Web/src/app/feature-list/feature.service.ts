@@ -49,15 +49,18 @@ export class FeatureService {
     return this.client.put(updateUrl, environment).toPromise();
   };
 
-  public removeEnvironment = (environmentId: number) => {
+  public removeEnvironment = (featureId: number, environmentId: number) => {
     return this.client
-      .delete(`${environmentBaseUrl}/${environmentId}`)
+      .delete(`${featureBaseUrl}/${featureId}/environments/${environmentId}`)
       .toPromise();
   };
 
-  public toggle = (environmentId: number) => {
+  public toggle = (featureId: number, environmentId: number) => {
     return this.client
-      .patch(`${environmentBaseUrl}/${environmentId}/toggle`, null)
+      .patch(
+        `${featureBaseUrl}/${featureId}/environments/${environmentId}/toggle`,
+        null
+      )
       .toPromise();
   };
 }

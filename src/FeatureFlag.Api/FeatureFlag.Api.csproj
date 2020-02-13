@@ -22,6 +22,10 @@
     <ProjectReference Include="..\FeatureFlag.Application\FeatureFlag.Application.csproj" />
     <ProjectReference Include="..\FeatureFlag.Infrastructure\FeatureFlag.Infrastructure.csproj" />
   </ItemGroup>
-
+  
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
 
 </Project>

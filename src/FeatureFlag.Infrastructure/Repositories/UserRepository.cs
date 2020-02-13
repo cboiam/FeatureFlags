@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace FeatureFlag.Infrastructure.Repositories
 {
-    public class UserRepository : Repository<Models.User, User>, IUserRepository
+    public class UserRepository : Repository<Models.User>, IUserRepository
     {
-        public UserRepository(FeatureFlagContext context, IMapper mapper)
-            : base(context, mapper) { }
+        public UserRepository(FeatureFlagContext context)
+            : base(context) { }
 
         public async Task<bool> UpdateRange(IEnumerable<User> users, int environmentId)
         {

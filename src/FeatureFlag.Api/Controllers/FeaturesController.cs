@@ -1,9 +1,9 @@
 ﻿using FeatureFlag.Application.Interfaces.AppServices;
 using FeatureFlag.Application.Models;
 using FeatureFlag.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace FeatureFlag.Api.Controllers
@@ -20,6 +20,8 @@ namespace FeatureFlag.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<Feature>> GetAll()
         {
             var result = await featureAppService.GetAll();
@@ -28,11 +30,12 @@ namespace FeatureFlag.Api.Controllers
             {
                 return NoContent();
             }
-
             return Ok(result);
         }
 
         [HttpGet("{name}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Feature>> Get(string name)
         {
             var result = await featureAppService.Get(name);
@@ -41,32 +44,33 @@ namespace FeatureFlag.Api.Controllers
             {
                 return NotFound();
             }
-
             return Ok(result);
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Feature>> Create(FeaturePostRequest feature)
         {
             var result = await featureAppService.Add(feature);
-
-            return CreatedAtAction("Get", new { name = result.Name }, result);
+            return this.Created(result);
         }
 
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Update(FeaturePutRequest feature)
         {
             var result = await featureAppService.Update(feature);
             
-            return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
+            return result ? Ok() : this.InternalServerError();
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Delete(int id)
         {
             var result = await featureAppService.Remove(id);
 
-            return result ? Ok() : StatusCode((int)HttpStatusCode.InternalServerError);
+            return result ? Ok() : this.InternalServerError();
         }
     }
 }

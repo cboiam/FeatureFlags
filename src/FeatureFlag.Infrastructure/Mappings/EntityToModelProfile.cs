@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using System.Linq;
 using Entities = FeatureFlag.Domain.Models;
-using Models = FeatureFlag.Infrastructure.Models;
 
-namespace FeatureFlag.Api.Mapper
+namespace FeatureFlag.Infrastructure.Mappings
 {
     public class EntityToModelProfile : Profile
     {

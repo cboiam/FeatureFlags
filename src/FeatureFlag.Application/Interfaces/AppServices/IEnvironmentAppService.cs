@@ -12,7 +12,7 @@ namespace FeatureFlag.Application.Interfaces.AppServices
         Task<bool> CheckEnabled(string featureName, string environmentName, string userName);
         Task<Environment> Add(EnvironmentPostRequest environment, int featureId);
         Task<bool> Update(EnvironmentPutRequest environment, int featureId);
-        Task<bool> Remove(int id);
-        Task<bool> Toggle(int id);
+        Task<bool> Remove(int featureId, int id);
+        Task<bool> Toggle(int featureId, int id);
     }
 }

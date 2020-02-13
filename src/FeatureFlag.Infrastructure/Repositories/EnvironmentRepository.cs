@@ -9,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace FeatureFlag.Infrastructure.Repositories
 {
-    public class EnvironmentRepository : Repository<Models.Environment, Environment>, IEnvironmentRepository
+    public class EnvironmentRepository : Repository<Models.Environment>, IEnvironmentRepository
     {
+        private readonly IMapper mapper;
         private readonly IUserRepository userRepository;
 
         public EnvironmentRepository(FeatureFlagContext context, IMapper mapper, IUserRepository userRepository)
-            : base(context, mapper)
+            : base(context)
         {
+            this.mapper = mapper;
             this.userRepository = userRepository;
         }
 
@@ -64,9 +66,9 @@ namespace FeatureFlag.Infrastructure.Repositories
             return mapper.Map<Environment>(model);
         }
 
-        public async Task<bool> Toggle(int id)
+        public async Task<bool> Toggle(int featureId, int id)
         {
-            var model = await dbSet.FirstOrDefaultAsync(e => e.Id == id);
+            var model = await dbSet.FirstOrDefaultAsync(e => e.FeatureId == featureId && e.Id == id);
 
             model.Enabled = !model.Enabled;
 
@@ -74,10 +76,18 @@ namespace FeatureFlag.Infrastructure.Repositories
             return await Save();
         }
 
-        public async Task ValidateEnvironmentName(Environment environment, int featureId)
+        public async Task<bool> Remove(int featureId, int id)
         {
-            if (await dbSet.AnyAsync(e => e.FeatureId == featureId && 
-                                          e.Id != environment.Id && 
+            var model = await dbSet.FirstOrDefaultAsync(e => e.FeatureId == featureId && e.Id == id);
+            dbSet.Remove(model);
+
+            return await Save();
+        }
+
+        private async Task ValidateEnvironmentName(Environment environment, int featureId)
+        {
+            if (await dbSet.AnyAsync(e => e.FeatureId == featureId &&
+                                          e.Id != environment.Id &&
                                           e.Name == environment.Name))
             {
                 throw new System.InvalidOperationException("Environment already exist for this feature");
