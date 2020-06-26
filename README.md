@@ -1,6 +1,6 @@
 # Feature flags manager
 
-This application is a demonstration of the techniques proposed by Martin Fowler in this [article](https://www.martinfowler.com/articles/feature-toggles.html), so basically, this application enables a the control of the features of an application.
+This application is a demonstration of the techniques proposed by Martin Fowler in this [article](https://www.martinfowler.com/articles/feature-toggles.html), so basically, this application enables the control of the features of an application.
 
 ### How to run
 
