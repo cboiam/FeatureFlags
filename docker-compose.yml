@@ -1,8 +1,8 @@
 version: '3'
+
 services:
   db:
     image: mysql:5.7
-    # command: --lower_case_table_names=1
     volumes:
       - ./db:/var/lib/mysql
     restart: always
@@ -11,3 +11,15 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
     container_name: db
+  api:
+    build: ./src/
+    restart: always
+    ports: 
+      - 8080:80
+    environment: 
+      ASPNETCORE_ENVIRONMENT: Development
+  web:
+    build: ./src/FeatureFlag.Web
+    restart: always
+    ports: 
+      - 80:80
