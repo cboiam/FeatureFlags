@@ -13,7 +13,7 @@ namespace FeatureFlag.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("FeatureFlag.Infrastructure.Models.Environment", b =>
@@ -30,7 +30,7 @@ namespace FeatureFlag.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -47,7 +47,7 @@ namespace FeatureFlag.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(767)");
 
                     b.HasKey("Id");
 
@@ -66,7 +66,7 @@ namespace FeatureFlag.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -77,7 +77,7 @@ namespace FeatureFlag.Infrastructure.Migrations
 
             modelBuilder.Entity("FeatureFlag.Infrastructure.Models.Environment", b =>
                 {
-                    b.HasOne("FeatureFlag.Infrastructure.Models.Feature", null)
+                    b.HasOne("FeatureFlag.Infrastructure.Models.Feature", "Feature")
                         .WithMany("Environments")
                         .HasForeignKey("FeatureId")
                         .OnDelete(DeleteBehavior.Cascade)

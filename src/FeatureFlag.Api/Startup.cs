@@ -76,6 +76,8 @@ namespace FeatureFlag.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAutomaticMigrations();
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

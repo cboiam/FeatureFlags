@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace FeatureFlag.Infrastructure.Migrations
 {
-    public partial class Initialdatabasestructure : Migration
+    public partial class Initialschema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,8 +12,8 @@ namespace FeatureFlag.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,8 +25,8 @@ namespace FeatureFlag.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
                     Enabled = table.Column<bool>(nullable: false),
                     FeatureId = table.Column<int>(nullable: false)
                 },
@@ -46,7 +46,7 @@ namespace FeatureFlag.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     EnvironmentId = table.Column<int>(nullable: false)
                 },
@@ -65,6 +65,11 @@ namespace FeatureFlag.Infrastructure.Migrations
                 name: "IX_Environments_FeatureId",
                 table: "Environments",
                 column: "FeatureId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Features_Name",
+                table: "Features",
+                column: "Name");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_EnvironmentId",
